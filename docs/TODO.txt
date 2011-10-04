@@ -1,0 +1,19 @@
+TODO List:
+==========
+
+* Parse other Emails with UTF-8 Problems to check every thing goes right
+
+* encoding of content (should be done, more tests!!!)
+
+* Test mail_to_sql.txt, must be better
+
+next version:
+=============
+
+* logs should have the same name (? - more configurable)
+
+* mail by error (? - more configurable)
+
+* force import broken files  
+
+* save filenames in database?

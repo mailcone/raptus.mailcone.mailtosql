@@ -1,0 +1,37 @@
+Return-Path: <m.lempen@bluewin.ch>
+Received: from parlarix.raptus.local ([192.168.8.14])
+	by groupix.raptus.local
+	for mlempen@raptus.com;
+	Mon, 13 Dec 2010 09:43:00 +0100
+Received: from host1.raptus.com (gatenix.raptus.local [192.168.8.1])
+	by parlarix.raptus.local (Postfix) with ESMTP id 2088C4408
+	for <mlempen@raptus.com>; Mon, 13 Dec 2010 09:43:00 +0100 (CET)
+Received: from localhost (localhost.localhost [127.0.0.1])
+	by host1.raptus.com (Postfix) with ESMTP id 27EFAAC005
+	for <mlempen@raptus.com>; Mon, 13 Dec 2010 09:43:00 +0100 (CET)
+X-Virus-Scanned: by Endian Firewall
+X-Spam-CTCH-RefID: 
+Received: from mail16.bluewin.ch (mail16.bluewin.ch [195.186.19.63])
+	by host1.raptus.com (Postfix) with ESMTP id 7B26BAC002
+	for <mlempen@raptus.com>; Mon, 13 Dec 2010 09:42:59 +0100 (CET)
+Received: from [195.186.19.205] ([195.186.19.205:64820] helo=ps28zhh.bluewin.ch)
+	by mail16.bluewin.ch (envelope-from <m.lempen@bluewin.ch>)
+	(ecelerity 2.2.2.41 r(31179/31189)) with ESMTP
+	id D3/5D-15979-29CD50D4; Mon, 13 Dec 2010 08:42:58 +0000
+Received: from ps28zhh.bluewin.ch (localhost [127.0.0.1])
+	by ps28zhh.bluewin.ch (Postfix) with ESMTP id 764611A712
+	for <mlempen@raptus.com>; Mon, 13 Dec 2010 08:42:58 +0000 (GMT)
+Received: from (127.0.0.1) by ps28zhh.bluewin.ch;  Mon, 13 Dec 2010 08:42:58 +0000
+Message-ID: <21075616.32121292229778480.JavaMail.webmail@bluewin.ch>
+Date: Mon, 13 Dec 2010 08:42:58 +0000 (GMT+00:00)
+From: "m.lempen@bluewin.ch" <m.lempen@bluewin.ch>
+Reply-To: m.lempen@bluewin.ch
+To: mlempen@raptus.com
+Subject: =?UTF-8?Q?Testmail_mit_Umlauten_=C3=A4,=C3=B6,=C3=BC?=
+MIME-Version: 1.0
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-FXIT-IP: 213.142.176.104
+X-Bluewin-ln: de
+
+w6ksIMOgLCDDqAoKw6QsIMO2LCDDvAoKw78sIMOrLCDigqw=

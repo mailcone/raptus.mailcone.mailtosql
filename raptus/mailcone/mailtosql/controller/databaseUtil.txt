@@ -1,0 +1,121 @@
+# -*- coding: utf-8 -*-
+
+import moduls, which are needed for tests
+::
+	>>> from controller.databaseUtil import DatabaseUtil
+	>>> from data.mail import Mail
+	>>> from config import CONFIG
+	>>> import datetime
+
+XXX: hack, to find testMail2 file, perhaps could be done better
+::	
+	>>> import sys
+	>>> path = sys.argv [0].replace ('test_mail_to_sql.py', '') 
+ 
+set CONFIG parameters which are set in default.cfg
+::
+	>>> from mail_to_sql import parseConfig
+	>>> parseConfig (path + 'default.cfg')
+	
+Initialize an database util.
+::
+	>>> dbUtil = DatabaseUtil (CONFIG)
+	
+	>>> dbUtil
+	<controller.databaseUtil.DatabaseUtil object at ...>
+	
+test function __init__ - 
+Is dbUtil attributes equals to config
+::
+	>>> dbUtil.engine
+	Engine(...)
+	
+	>>> dbUtil.session
+	<sqlalchemy.orm.session.Session object at ...>
+	
+test function connect - 
+connect with sql database and query table mails
+::
+	>>> dbUtil = DatabaseUtil (CONFIG)
+	>>> dbUtil.connect ()
+	>>> dbUtil.session.query(Mail).all ()
+	[...]
+
+test function saveObject - add mail to sqldatabase
+::	
+	>>> mail = Mail ()
+    
+    >>> mail.date = datetime.date (2010,11,22)
+    >>> mail.mail_from = 'mail from'
+    >>> mail.mail_from_domain = 'mail from domain'
+    >>> mail.organisation = 'organisation'
+    >>> mail.mail_to = 'mail to'
+    >>> mail.mail_to_domain = 'mail to domain'
+    >>> mail.mail_cc = 'test cc'
+    >>> mail.in_reply_to = 'this is a test reference'
+    >>> mail.mail_references = 'test references'
+    >>> mail.header = 'test header'
+	>>> mail.subject = 'testMail from unittest'
+    >>> mail.content = 'this is a test content'
+    >>> mail.path_to_attachments = '/test'
+    
+	>>> mail
+	<data.mail.Mail object at ...>
+	
+	>>> dbUtil.saveObject (mail)
+	True
+
+	>>> mail = dbUtil.session.query(Mail).get(mail.id)
+	>>> dbUtil.session.delete(mail)
+	>>> dbUtil.session.commit()
+
+	>>> dbUtil.session.query(Mail).filter_by(subject='testMail from unittest').all()
+	[]
+
+close connection
+::
+	>>> dbUtil.closeConnection ()
+
+TESTS IF EVERY FUNCTION RAISE AN ERROR IF SOMETHING BREAK
+NEEDED BECAUSE OTHERWISE PIPEDATA WOULD NOT BE SAVED - LOST DATA
+
+XXX - test function _createEngine - raise error
+::
+
+XXX - test function _createSession - raise error
+::
+
+test function connect - raise Error
+try connection with wrong connection parameters
+::
+	>>> dbUtil.dbHostname = 'localhost'
+	>>> dbUtil.dbPort = 10
+	>>> dbUtil._createEngine ()
+	>>> dbUtil.connect ()
+	Traceback (most recent call last):
+	    ...
+	RuntimeError: DatabaseUtil - connect() - FAILED - (OperationalError) could not connect to server: Connection refused
+	    Is the server running on host "localhost" and accepting
+	    TCP/IP connections on port 10?
+	 None None
+
+test function connect - raise Error
+try to connect with a non existing database
+:: 
+	>>> dbUtil = DatabaseUtil (CONFIG)
+	>>> dbUtil.dbName = 'fakeDBName'
+	>>> dbUtil._createEngine ()
+	>>> dbUtil.connect ()
+	Traceback (most recent call last):
+	    ...
+	RuntimeError: DatabaseUtil - connect() - FAILED - (OperationalError) FATAL:  database "fakeDBName" does not exist
+	 None None
+
+
+test function saveObject - raise error
+::
+	>>> mail = 'Mail'
+	>>> dbUtil.saveObject (mail)
+	Traceback (most recent call last):
+	    ...
+	RuntimeError: DatabaseUtil - saveObject() - FAILED - Class '__builtin__.str' is not mapped
