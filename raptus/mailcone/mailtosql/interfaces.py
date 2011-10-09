@@ -7,4 +7,10 @@ class IFieldMapper(interface.Interface):
         """ parse string value to specified
             type and store it on the context
         """
-    
+
+
+class IContentMapper(interface.Interface):
+
+    def parse(self, message):
+        """ parse mail content like attachment or html
+        """

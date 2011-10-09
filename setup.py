@@ -29,6 +29,7 @@ setup(name='raptus.mailcone.mailtosql',
           'SQLAlchemy',
           'DateUtils',
           'chardet',
+          'stripogram',
           'pyzmail',
 
       ],

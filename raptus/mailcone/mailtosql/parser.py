@@ -20,8 +20,16 @@ class Parser(object):
         session = Session()
         
         context = Mail()
+        
         for name, adapter in component.getAdapters((context,), interfaces.IFieldMapper):
             adapter.parse(dict(mail.items()))
+        
+        for message in mail.get_payload():
+            type = message.get_content_type()
+            adapter = component.queryAdapter(context, interface=interfaces.IContentMapper, name=type)
+            if adapter is None:
+                adapter = component.getAdapter(context, interface=interfaces.IContentMapper, name='')
+            adapter.parse(message)
         
         session.add(context)
         
