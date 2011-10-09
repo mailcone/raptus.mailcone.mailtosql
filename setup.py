@@ -26,9 +26,10 @@ setup(name='raptus.mailcone.mailtosql',
           # -*- Extra requirements: -*-
           'setuptools',
           'raptus.mailcone.mails',
-          'sqlalchemy',
+          'SQLAlchemy',
+          'DateUtils',
           'chardet',
-          'dateutil'
+          'pyzmail',
 
       ],
       entry_points="""
