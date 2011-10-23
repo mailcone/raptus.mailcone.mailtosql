@@ -3,7 +3,9 @@
            i18n_domain="raptus.mailcone.mailtosql"
            xmlns:i18n="http://namespaces.zope.org/i18n">
 
-  <includeDependencies package="raptus.mailcone.mailtosql" />
+  <grok:grok package="raptus.mailcone.app" />
+  <grok:grok package="raptus.mailcone.core" />
+  <grok:grok package="raptus.mailcone.mails.contents" />
   <grok:grok package="raptus.mailcone.mailtosql" />
   
 </configure>

@@ -1,7 +1,21 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           i18n_domain="raptus.mailcone">
+           i18n_domain="raptus.mailcone"
+           xmlns:grok="http://namespaces.zope.org/grok">
 
-    <include package="grok" />
+
+    <include package="zope.component" />
+    <include package="zope.location" />
+    <include package="z3c.saconfig" file="meta.zcml" />
+
+    <include package="grokcore.component" file="meta.zcml" />
+    <grok:grok package="grok.meta" />
+    <include package="raptus.mailcone.core" file="meta.zcml" />
+    <include package="megrok.rdb" file="meta.zcml" />
+    <include package="megrok.rdb" />
+
+
     <include file="configure.zcml" />
+
+
 
 </configure>
