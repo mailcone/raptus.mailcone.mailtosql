@@ -27,15 +27,8 @@ def main(config=None, file=None):
                       default=None,
                       help='path to configuration file')
 
-
     options, args = parser.parse_args()
     
-    if options.file is not None:
-        data = open(options.file,'r').read()
-    elif file is not None:
-        data = open(file, 'r').read()
-    else:
-        data = sys.stdin.read()
     
     configparser = ConfigParser()
     if options.config is not None:
@@ -55,10 +48,25 @@ def main(config=None, file=None):
     
     appsetup.config(zcml)
 
-
     from raptus.mailcone.mailtosql.parser import Parser
-    Parser(data)
+    if options.file is not None:
+        for f in files(options.file):
+            Parser(open(f,'r').read())
+    elif file is not None:
+        for f in files(file):
+            Parser(open(f, 'r').read())
+    else:
+        Parser(sys.stdin.read())
 
+
+
+def files(path):
+    if isinstance(path, list):
+        return path
+    if os.path.isdir(path):
+        return [os.path.join(path, i) for i in os.listdir(path)]
+    return [path]
+    
 
 
 

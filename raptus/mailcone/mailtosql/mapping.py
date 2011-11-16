@@ -5,6 +5,7 @@ import rfc822
 import time
 
 from pyzmail import utils
+from pyzmail.parse import decode_text
 from email import encoders
 from stripogram import html2text
 from datetime import datetime
@@ -41,6 +42,7 @@ class FieldMapper(grok.Adapter):
             for field, value in mail.items():
                 if not k == field:
                     continue
+                value, charset = decode_text(value, mail.get_charset(), None)
                 value = self.modify(value)
                 if self.multi:
                     self.add(value)
@@ -142,21 +144,27 @@ class Date(FieldMapper):
         return datetime.fromtimestamp(time.mktime(rfc822.parsedate(value)))
 
 
+
+
+
 class ContentMapper(grok.Adapter):
     grok.context(IMail)
     grok.implements(interfaces.IContentMapper)
     grok.baseclass()
+    charset = None
 
     def __init__(self, context):
         self.mail = context
         if self.mail.content is None:
             self.mail.content = ''
 
-    def content(self, message):
+    def content(self, message, encode=True):
         content = message.get_payload(decode=True)
         if content is None:
-            return 
+            return ''
+        content, self.charset = decode_text(content, message.get_charset(), None)
         return content
+    
 
 
 class PlainContentMapper(ContentMapper):
@@ -180,10 +188,11 @@ class AttachmentContentMapper(ContentMapper):
     def parse(self, message):
         path = local_configuration['attachments']['output']
         filename = utils.sanitize_filename(message.get_filename(),None,None)
-        filename = utils.handle_filename_collision(filename, os.listdir(path))
+        filename = utils.handle_filename_collision(filename, [f.lower() for f in os.listdir(path)])
         fullpath = os.path.abspath(os.path.join(path, filename))
         with open(fullpath, 'w') as f:
-            print >> f, self.content(message)
+            content = self.content(message)
+            print >> f, content.encode(self.charset)
 
         attachment = Attachment()
         attachment.path = fullpath
