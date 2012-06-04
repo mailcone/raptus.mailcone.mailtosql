@@ -74,20 +74,26 @@ class FieldMapper(grok.Adapter):
 class Subject(FieldMapper):
     grok.name('subject')
     key = 'Subject'
+    def parse(self, mail):
+        self.set(mail.get_subject())
+
 
 class From(FieldMapper):
     grok.name('mail_from')
     key = 'From'
+
 
 class FromDomain(FieldMapper):
     grok.name('mail_from_domain')
     key = 'From'
     regex = config.DOMAIN_REGEX
 
+
 class To(FieldMapper):
     grok.name('mail_to')
     key = 'To'
     multi = True
+
 
 class ToDomain(FieldMapper):
     grok.name('mail_to_domain')
@@ -95,20 +101,24 @@ class ToDomain(FieldMapper):
     multi = True
     regex = config.DOMAIN_REGEX
 
+
 class CC(FieldMapper):
     grok.name('mail_cc')
     key = 'Cc'
     multi = True
+
 
 class CCDomain(FieldMapper):
     grok.name('mail_cc_domain')
     key = 'Cc'
     regex = config.DOMAIN_REGEX
 
+
 class BBC(FieldMapper):
     grok.name('mail_bbc')
     key = 'Bcc'
     multi = True
+
 
 class BBCDomain(FieldMapper):
     grok.name('mail_bbc_domain')
@@ -116,26 +126,32 @@ class BBCDomain(FieldMapper):
     multi = True
     regex = config.DOMAIN_REGEX
 
+
 class Received(FieldMapper):
     grok.name('received')
     key = 'Received'
     multi = True
 
+
 class Reply(FieldMapper):
     grok.name('reply_to')
     key = 'Reply-To'
+
 
 class Sender(FieldMapper):
     grok.name('sender')
     key = 'Sender'
 
+
 class XSourceIP(FieldMapper):
     grok.name('x_source_ip')
     key = 'X-SourceIP'
 
+
 class Mime(FieldMapper):
     grok.name('mime_version')
     key = 'MIME-Version'
+
 
 class Date(FieldMapper):
     grok.name('date')
@@ -159,26 +175,32 @@ class ContentMapper(grok.Adapter):
             self.mail.content = ''
 
     def content(self, message, encode=True):
-        content = message.get_payload(decode=True)
+        content = message.get_payload()
         if content is None:
             return ''
-        content, self.charset = decode_text(content, message.get_charset(), None)
+        content, self.charset = decode_text(content, message.charset, None)
         return content
-    
+
 
 
 class PlainContentMapper(ContentMapper):
     grok.name('text/plain')
     
     def parse(self, message):
-        self.mail.content += self.content(message)
+        text = self.content(message)
+        self.mail.content += text
+        self.mail.multiparts.append(text)
+
 
 
 class HTMLContentMapper(ContentMapper):
     grok.name('text/html')
     
     def parse(self, message):
-        self.mail.content += html2text(self.content(message))
+        text = html2text(self.content(message))
+        self.mail.content += text
+        self.mail.multiparts.append(text)
+
 
 
 class AttachmentContentMapper(ContentMapper):
@@ -187,7 +209,7 @@ class AttachmentContentMapper(ContentMapper):
     
     def parse(self, message):
         path = local_configuration['attachments']['output']
-        filename = utils.sanitize_filename(message.get_filename(),None,None)
+        filename = utils.sanitize_filename(message.filename,None,None)
         filename = utils.handle_filename_collision(filename, [f.lower() for f in os.listdir(path)])
         fullpath = os.path.abspath(os.path.join(path, filename))
         with open(fullpath, 'w') as f:
