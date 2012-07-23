@@ -5,7 +5,7 @@ from optparse import OptionParser
 
 from zope.app.appsetup import appsetup
 
-from raptus.mailcone.app.startup import configurator
+from raptus.mailcone.app.startup import raw_configurator
 
 
 
@@ -41,10 +41,7 @@ def main(config=None, file=None):
     
     zcml = os.path.join(os.path.dirname(__file__),'site.zcml')
     
-    configurator(dict(here=__file__,
-                      __file__=config,
-                      zope_conf=zcml),
-                **dict(configparser.items('mailtosql')))
+    raw_configurator(ini_file=config, local_conf_key='mailtosql', here=__file__)
     
     appsetup.config(zcml)
 
