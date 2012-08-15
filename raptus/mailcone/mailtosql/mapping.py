@@ -7,7 +7,7 @@ import time
 from pyzmail import utils
 from pyzmail.parse import decode_text
 from email import encoders
-from stripogram import html2text
+from html2text import html2text
 from datetime import datetime
 
 from raptus.mailcone.app.config import local_configuration
@@ -197,8 +197,8 @@ class HTMLContentMapper(ContentMapper):
     grok.name('text/html')
     
     def parse(self, message):
-        text = html2text(self.content(message))
-        self.mail.content += text
+        text = self.content(message)
+        self.mail.content += html2text(text)
         self.mail.multiparts.append(text)
 
 

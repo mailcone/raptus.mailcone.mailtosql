@@ -27,7 +27,7 @@ setup(name='raptus.mailcone.mailtosql',
           'setuptools',
           'raptus.mailcone.mails',
           'pyzmail',
-          'stripogram',
+          'html2text',
 
       ],
       entry_points="""
