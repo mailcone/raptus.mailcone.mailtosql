@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import hashlib
+from datetime import datetime
 
 import transaction
 
@@ -26,6 +27,7 @@ class Parser(object):
         
         session = Session()
         context = Mail()
+        context.parsing_date = datetime.now()
         mail = message_from_string(data)
         
         for name, adapter in component.getAdapters((context,), interfaces.IFieldMapper):
